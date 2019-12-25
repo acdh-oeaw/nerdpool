@@ -25,7 +25,7 @@ class Example(models.Model):
         db_table = 'example'
 
     def ex_as_json(self):
-        return json.loads(self.content.tobytes())
+        return json.loads(self.content)
 
     def __str__(self):
         mytext = self.ex_as_json().get('text')
