@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
     url(r'^browsing/', include('browsing.urls', namespace='browsing')),
+    url(r'^myprodigy/', include('myprodigy.urls', namespace='myprodigy')),
     url(r'^info/', include('infos.urls', namespace='info')),
     url(r'^', include('webpage.urls', namespace='webpage')),
 ]

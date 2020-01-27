@@ -19,6 +19,8 @@ bib/migrations/*
 webpage/migrations/*
 places/migrations/*
 
+appcreator
+output_*
 
 # Ipython Notebook checkpoints
 .ipynb_checkpoints
