@@ -7,6 +7,7 @@ class Dataset(models.Model):
     created = models.IntegerField()
     meta = models.BinaryField()
     session = models.BooleanField()
+    description = models.TextField(blank=True, null=True)
 
     class Meta:
         db_table = 'dataset'
