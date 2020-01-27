@@ -39,3 +39,4 @@ dev_secret.py
 *.jsonl
 /myenv
 prodigy.json
+pg_local.py

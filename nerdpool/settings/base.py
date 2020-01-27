@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'webpage',
     'browsing',
     'infos',
-    'myprodigy'
+    'myprodigy',
+    'netvis'
 ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"

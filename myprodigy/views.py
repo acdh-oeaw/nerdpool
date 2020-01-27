@@ -31,7 +31,7 @@ class DatasetListView(GenericListView):
 class DatasetDetailView(BaseDetailView):
 
     model = Dataset
-    template_name = 'browsing/generic_detail.html'
+    template_name = 'myprodigy/generic_detail.html'
 
 
 class DatasetCreate(BaseCreateView):
@@ -79,7 +79,7 @@ class ExampleListView(GenericListView):
 class ExampleDetailView(BaseDetailView):
 
     model = Example
-    template_name = 'browsing/generic_detail.html'
+    template_name = 'myprodigy/generic_detail.html'
 
 
 class ExampleCreate(BaseCreateView):
