@@ -23,9 +23,9 @@ class DatasetListView(GenericListView):
     formhelper_class = DatasetFilterFormHelper
     table_class = DatasetTable
     init_columns = [
-        'id', 'False',
+        'id', 'name',
     ]
-    enable_merge = True
+    enable_merge = False
 
 
 class DatasetDetailView(BaseDetailView):

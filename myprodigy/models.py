@@ -1,8 +1,10 @@
 import json
 from django.db import models
 from django.urls import reverse
+from django.contrib.postgres.fields import JSONField
 
 from browsing.browsing_utils import model_to_dict
+from vocabs.models import SkosConcept
 
 
 class Dataset(models.Model):
@@ -60,17 +62,37 @@ class Dataset(models.Model):
         return False
 
 
+class NerSample(models.Model):
+    input_hash = models.BigIntegerField(null=True, blank=True)
+    task_hash = models.BigIntegerField(null=True, blank=True)
+    text = models.TextField(blank=True, null=True)
+    entities = models.ManyToManyField(
+        SkosConcept,
+        blank=True,
+        related_name='rvn_mentioned_in_nersample',
+    )
+    dataset = models.ManyToManyField(
+        Dataset,
+        blank=True,
+        related_name='rvn_has_nersample',
+    )
+    orig_example = JSONField(blank=True, null=True)
+
+
 class Example(models.Model):
     input_hash = models.BigIntegerField()
     task_hash = models.BigIntegerField()
     content = models.BinaryField()
-    link = models.ManyToManyField(Dataset, db_table='link')
+    link = models.ManyToManyField(
+        Dataset, db_table='link',
+        related_name='rvn_has_example',
+    )
 
     class Meta:
         db_table = 'example'
 
     def ex_as_json(self):
-        return json.loads(self.content)
+        return json.loads(self.content.tobytes().decode('utf-8'))
 
     def __str__(self):
         mytext = self.ex_as_json().get('text')

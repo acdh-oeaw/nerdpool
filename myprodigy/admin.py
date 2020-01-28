@@ -4,3 +4,4 @@ from . models import *
 # Register your models here.
 admin.site.register(Dataset)
 admin.site.register(Example)
+admin.site.register(NerSample)

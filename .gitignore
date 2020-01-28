@@ -40,3 +40,4 @@ dev_secret.py
 /myenv
 prodigy.json
 pg_local.py
+sample.json

@@ -1,5 +1,7 @@
 import os
 
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(
     os.path.dirname(os.path.abspath(os.path.join(__file__, '../')))
@@ -33,7 +35,8 @@ INSTALLED_APPS = [
     'browsing',
     'infos',
     'myprodigy',
-    'netvis'
+    'netvis',
+    'vocabs',
 ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
@@ -117,3 +120,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
+
+
+VOCABS_DEFAULT_PEFIX = "acdh-nerdpool"
+
+VOCABS_SETTINGS = {
+    'default_prefix': VOCABS_DEFAULT_PEFIX,
+    'default_ns': "http://www.vocabs/{}/".format(VOCABS_DEFAULT_PEFIX),
+    'default_lang': "ger"
+}
