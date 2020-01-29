@@ -17,7 +17,7 @@ sys.path.append('/home/csae8092/repos/nerdpool')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nerdpool.settings.pg_local')
 django.setup()
 
-from django.config import settings
+from django.conf import settings
 
 from myprodigy.models import NerSample, Dataset
 from myprodigy.utils import nersample_from_answer
@@ -116,7 +116,7 @@ def nerdpool_make_gold(
     stream = make_tasks(nlp, stream)
 
     def update(answers):
-        scheme, _ = SkosConceptScheme.object.get_or_create(
+        scheme, _ = SkosConceptScheme.objects.get_or_create(
             dc_title=NERDPOOL_DEFAULT_NER_SCHEME
         )
         cur_dataset = Dataset.objects.get(name=dataset)

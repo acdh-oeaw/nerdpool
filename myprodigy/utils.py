@@ -1,5 +1,7 @@
 from vocabs.models import SkosConcept
 
+from . models import Dataset, NerSample
+
 
 def get_used_labels(sample):
     try:
