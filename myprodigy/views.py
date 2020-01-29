@@ -9,11 +9,60 @@ from . forms import *
 from . tables import *
 from . models import (
     Dataset,
+    NerSample,
     Example
 )
 from browsing.browsing_utils import (
     GenericListView, BaseCreateView, BaseUpdateView, BaseDetailView
 )
+
+
+class NerSampleListView(GenericListView):
+
+    model = NerSample
+    filter_class = NerSampleListFilter
+    formhelper_class = NerSampleFilterFormHelper
+    table_class = NerSampleTable
+    init_columns = [
+        'id', 'text'
+    ]
+    enable_merge = False
+
+
+class NerSampleDetailView(BaseDetailView):
+
+    model = NerSample
+    template_name = 'myprodigy/generic_detail.html'
+
+
+class NerSampleCreate(BaseCreateView):
+
+    model = NerSample
+    form_class = NerSampleForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NerSampleCreate, self).dispatch(*args, **kwargs)
+
+
+class NerSampleUpdate(BaseUpdateView):
+
+    model = NerSample
+    form_class = NerSampleForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NerSampleUpdate, self).dispatch(*args, **kwargs)
+
+
+class NerSampleDelete(DeleteView):
+    model = NerSample
+    template_name = 'webpage/confirm_delete.html'
+    success_url = reverse_lazy('myprodigy:nersample_browse')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NerSampleDelete, self).dispatch(*args, **kwargs)
 
 
 class DatasetListView(GenericListView):

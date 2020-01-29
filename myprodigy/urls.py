@@ -29,6 +29,30 @@ urlpatterns = [
         views.DatasetDelete.as_view(),
         name='dataset_delete'),
     url(
+        r'^nersample/$',
+        views.NerSampleListView.as_view(),
+        name='nersample_browse'
+    ),
+    url(
+        r'^nersample/detail/(?P<pk>[0-9]+)$',
+        views.NerSampleDetailView.as_view(),
+        name='nersample_detail'
+    ),
+    url(
+        r'^nersample/create/$',
+        views.NerSampleCreate.as_view(),
+        name='nersample_create'
+    ),
+    url(
+        r'^nersample/edit/(?P<pk>[0-9]+)$',
+        views.NerSampleUpdate.as_view(),
+        name='nersample_edit'
+    ),
+    url(
+        r'^nersample/delete/(?P<pk>[0-9]+)$',
+        views.NerSampleDelete.as_view(),
+        name='nersample_delete'),
+    url(
         r'^example/$',
         views.ExampleListView.as_view(),
         name='example_browse'

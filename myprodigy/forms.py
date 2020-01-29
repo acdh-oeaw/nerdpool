@@ -4,8 +4,10 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit,  Layout, Fieldset, Div, MultiField, HTML
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 
+from vocabs.models import SkosConcept
 from . models import (
     Dataset,
+    NerSample,
     Example
 )
 
@@ -54,6 +56,56 @@ class DatasetForm(forms.ModelForm):
         self.helper.field_class = 'col-md-9'
         self.helper.add_input(Submit('submit', 'save'),)
 
+
+class NerSampleFilterFormHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(NerSampleFilterFormHelper, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.form_class = 'genericFilterForm'
+        self.form_method = 'GET'
+        self.helper.form_tag = False
+        self.add_input(Submit('Filter', 'Search'))
+        self.layout = Layout(
+            Fieldset(
+                'Basic search options',
+                'id',
+                css_id="basic_search_fields"
+                ),
+            Accordion(
+                AccordionGroup(
+                    'Advanced search',
+                    'id',
+                    'input_hash',
+                    'task_hash',
+                    'text',
+                    'orig_example',
+                    'entities',
+                    'dataset',
+                    css_id="more"
+                    ),
+                )
+            )
+
+
+class NerSampleForm(forms.ModelForm):
+    entities = forms.ModelMultipleChoiceField(
+        required=False,
+        label="entities",
+        queryset=SkosConcept.objects.filter(collection__name="entities")
+    )
+
+    class Meta:
+        model = NerSample
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(NerSampleForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = True
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-3'
+        self.helper.field_class = 'col-md-9'
+        self.helper.add_input(Submit('submit', 'save'),)
 
 class ExampleFilterFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):

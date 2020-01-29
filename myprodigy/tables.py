@@ -5,6 +5,7 @@ from django_tables2.utils import A
 from browsing.browsing_utils import MergeColumn
 from . models import (
     Dataset,
+    NerSample,
     Example
 )
 
@@ -16,6 +17,19 @@ class DatasetTable(tables.Table):
 
     class Meta:
         model = Dataset
+        sequence = ('id',)
+        attrs = {"class": "table table-responsive table-hover"}
+
+
+class NerSampleTable(tables.Table):
+
+    id = tables.LinkColumn(verbose_name='ID')
+    merge = MergeColumn(verbose_name='keep | remove', accessor='pk')
+    entities = tables.columns.ManyToManyColumn()
+    dataset = tables.columns.ManyToManyColumn()
+
+    class Meta:
+        model = NerSample
         sequence = ('id',)
         attrs = {"class": "table table-responsive table-hover"}
 

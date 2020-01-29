@@ -4,10 +4,49 @@ from django import forms
 
 from dal import autocomplete
 
+from vocabs.filters import generous_concept_filter
+from vocabs.models import SkosConcept
 from . models import (
     Dataset,
+    NerSample,
     Example
 )
+
+
+class NerSampleListFilter(django_filters.FilterSet):
+    text = django_filters.CharFilter(
+        lookup_expr='icontains',
+        help_text=NerSample._meta.get_field('text').help_text,
+        label=NerSample._meta.get_field('text').verbose_name
+    )
+    entities = django_filters.ModelMultipleChoiceFilter(
+        queryset=SkosConcept.objects.filter(
+            collection__name="entities"
+        ),
+        help_text=NerSample._meta.get_field('entities').help_text,
+        label=NerSample._meta.get_field('entities').verbose_name,
+        method=generous_concept_filter,
+        widget=autocomplete.Select2Multiple(
+            url="/vocabs-ac/specific-concept-ac/entities",
+            attrs={
+                'data-placeholder': 'Autocomplete ...',
+                'data-minimum-input-length': 2,
+                },
+        )
+    )
+
+    class Meta:
+        model = NerSample
+        fields = [
+            'id',
+            'id',
+            'input_hash',
+            'task_hash',
+            'text',
+            'entities',
+            'dataset',
+            ]
+
 
 
 class DatasetListFilter(django_filters.FilterSet):
