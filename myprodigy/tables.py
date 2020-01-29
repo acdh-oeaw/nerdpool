@@ -4,19 +4,21 @@ from django_tables2.utils import A
 
 from browsing.browsing_utils import MergeColumn
 from . models import (
-    Dataset,
+    NerDataSet,
     NerSample,
+    Dataset,
     Example
 )
 
 
-class DatasetTable(tables.Table):
+class NerDataSetTable(tables.Table):
 
     id = tables.LinkColumn(verbose_name='ID')
     merge = MergeColumn(verbose_name='keep | remove', accessor='pk')
+    ner_genre = tables.columns.ManyToManyColumn()
 
     class Meta:
-        model = Dataset
+        model = NerDataSet
         sequence = ('id',)
         attrs = {"class": "table table-responsive table-hover"}
 
@@ -30,17 +32,5 @@ class NerSampleTable(tables.Table):
 
     class Meta:
         model = NerSample
-        sequence = ('id',)
-        attrs = {"class": "table table-responsive table-hover"}
-
-
-class ExampleTable(tables.Table):
-
-    id = tables.LinkColumn(verbose_name='ID')
-    merge = MergeColumn(verbose_name='keep | remove', accessor='pk')
-    link = tables.columns.ManyToManyColumn()
-
-    class Meta:
-        model = Example
         sequence = ('id',)
         attrs = {"class": "table table-responsive table-hover"}

@@ -8,13 +8,60 @@ from . filters import *
 from . forms import *
 from . tables import *
 from . models import (
-    Dataset,
+    NerDataSet,
     NerSample,
-    Example
 )
 from browsing.browsing_utils import (
     GenericListView, BaseCreateView, BaseUpdateView, BaseDetailView
 )
+
+
+class NerDataSetListView(GenericListView):
+
+    model = NerDataSet
+    filter_class = NerDataSetListFilter
+    formhelper_class = NerDataSetFilterFormHelper
+    table_class = NerDataSetTable
+    init_columns = [
+        'id',
+    ]
+    enable_merge = False
+
+
+class NerDataSetDetailView(BaseDetailView):
+
+    model = NerDataSet
+    template_name = 'myprodigy/generic_detail.html'
+
+
+class NerDataSetCreate(BaseCreateView):
+
+    model = NerDataSet
+    form_class = NerDataSetForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NerDataSetCreate, self).dispatch(*args, **kwargs)
+
+
+class NerDataSetUpdate(BaseUpdateView):
+
+    model = NerDataSet
+    form_class = NerDataSetForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NerDataSetUpdate, self).dispatch(*args, **kwargs)
+
+
+class NerDataSetDelete(DeleteView):
+    model = NerDataSet
+    template_name = 'webpage/confirm_delete.html'
+    success_url = reverse_lazy('myprodigy:nerdataset_browse')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NerDataSetDelete, self).dispatch(*args, **kwargs)
 
 
 class NerSampleListView(GenericListView):
@@ -24,7 +71,7 @@ class NerSampleListView(GenericListView):
     formhelper_class = NerSampleFilterFormHelper
     table_class = NerSampleTable
     init_columns = [
-        'id', 'text'
+        'id',
     ]
     enable_merge = False
 
@@ -63,99 +110,3 @@ class NerSampleDelete(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(NerSampleDelete, self).dispatch(*args, **kwargs)
-
-
-class DatasetListView(GenericListView):
-
-    model = Dataset
-    filter_class = DatasetListFilter
-    formhelper_class = DatasetFilterFormHelper
-    table_class = DatasetTable
-    init_columns = [
-        'id', 'name',
-    ]
-    enable_merge = False
-
-
-class DatasetDetailView(BaseDetailView):
-
-    model = Dataset
-    template_name = 'myprodigy/generic_detail.html'
-
-
-class DatasetCreate(BaseCreateView):
-
-    model = Dataset
-    form_class = DatasetForm
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(DatasetCreate, self).dispatch(*args, **kwargs)
-
-
-class DatasetUpdate(BaseUpdateView):
-
-    model = Dataset
-    form_class = DatasetForm
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(DatasetUpdate, self).dispatch(*args, **kwargs)
-
-
-class DatasetDelete(DeleteView):
-    model = Dataset
-    template_name = 'webpage/confirm_delete.html'
-    success_url = reverse_lazy('myprodigy:dataset_browse')
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(DatasetDelete, self).dispatch(*args, **kwargs)
-
-
-class ExampleListView(GenericListView):
-
-    model = Example
-    filter_class = ExampleListFilter
-    formhelper_class = ExampleFilterFormHelper
-    table_class = ExampleTable
-    init_columns = [
-        'id', 'False',
-    ]
-    enable_merge = True
-
-
-class ExampleDetailView(BaseDetailView):
-
-    model = Example
-    template_name = 'myprodigy/generic_detail.html'
-
-
-class ExampleCreate(BaseCreateView):
-
-    model = Example
-    form_class = ExampleForm
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ExampleCreate, self).dispatch(*args, **kwargs)
-
-
-class ExampleUpdate(BaseUpdateView):
-
-    model = Example
-    form_class = ExampleForm
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ExampleUpdate, self).dispatch(*args, **kwargs)
-
-
-class ExampleDelete(DeleteView):
-    model = Example
-    template_name = 'webpage/confirm_delete.html'
-    success_url = reverse_lazy('myprodigy:example_browse')
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ExampleDelete, self).dispatch(*args, **kwargs)

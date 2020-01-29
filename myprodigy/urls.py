@@ -5,29 +5,29 @@ from . import views
 app_name = 'myprodigy'
 urlpatterns = [
     url(
-        r'^dataset/$',
-        views.DatasetListView.as_view(),
-        name='dataset_browse'
+        r'^nerdataset/$',
+        views.NerDataSetListView.as_view(),
+        name='nerdataset_browse'
     ),
     url(
-        r'^dataset/detail/(?P<pk>[0-9]+)$',
-        views.DatasetDetailView.as_view(),
-        name='dataset_detail'
+        r'^nerdataset/detail/(?P<pk>[0-9]+)$',
+        views.NerDataSetDetailView.as_view(),
+        name='nerdataset_detail'
     ),
     url(
-        r'^dataset/create/$',
-        views.DatasetCreate.as_view(),
-        name='dataset_create'
+        r'^nerdataset/create/$',
+        views.NerDataSetCreate.as_view(),
+        name='nerdataset_create'
     ),
     url(
-        r'^dataset/edit/(?P<pk>[0-9]+)$',
-        views.DatasetUpdate.as_view(),
-        name='dataset_edit'
+        r'^nerdataset/edit/(?P<pk>[0-9]+)$',
+        views.NerDataSetUpdate.as_view(),
+        name='nerdataset_edit'
     ),
     url(
-        r'^dataset/delete/(?P<pk>[0-9]+)$',
-        views.DatasetDelete.as_view(),
-        name='dataset_delete'),
+        r'^nerdataset/delete/(?P<pk>[0-9]+)$',
+        views.NerDataSetDelete.as_view(),
+        name='nerdataset_delete'),
     url(
         r'^nersample/$',
         views.NerSampleListView.as_view(),
@@ -52,28 +52,4 @@ urlpatterns = [
         r'^nersample/delete/(?P<pk>[0-9]+)$',
         views.NerSampleDelete.as_view(),
         name='nersample_delete'),
-    url(
-        r'^example/$',
-        views.ExampleListView.as_view(),
-        name='example_browse'
-    ),
-    url(
-        r'^example/detail/(?P<pk>[0-9]+)$',
-        views.ExampleDetailView.as_view(),
-        name='example_detail'
-    ),
-    url(
-        r'^example/create/$',
-        views.ExampleCreate.as_view(),
-        name='example_create'
-    ),
-    url(
-        r'^example/edit/(?P<pk>[0-9]+)$',
-        views.ExampleUpdate.as_view(),
-        name='example_edit'
-    ),
-    url(
-        r'^example/delete/(?P<pk>[0-9]+)$',
-        views.ExampleDelete.as_view(),
-        name='example_delete'),
 ]

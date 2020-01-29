@@ -7,10 +7,56 @@ from dal import autocomplete
 from vocabs.filters import generous_concept_filter
 from vocabs.models import SkosConcept
 from . models import (
-    Dataset,
+    NerDataSet,
     NerSample,
+    Dataset,
     Example
 )
+
+
+class NerDataSetListFilter(django_filters.FilterSet):
+    ner_name = django_filters.CharFilter(
+        lookup_expr='icontains',
+        help_text=NerDataSet._meta.get_field('ner_name').help_text,
+        label=NerDataSet._meta.get_field('ner_name').verbose_name
+    )
+    ner_description = django_filters.CharFilter(
+        lookup_expr='icontains',
+        help_text=NerDataSet._meta.get_field('ner_description').help_text,
+        label=NerDataSet._meta.get_field('ner_description').verbose_name
+    )
+    ner_period = django_filters.CharFilter(
+        lookup_expr='icontains',
+        help_text=NerDataSet._meta.get_field('ner_period').help_text,
+        label=NerDataSet._meta.get_field('ner_period').verbose_name
+    )
+    ner_genre = django_filters.ModelMultipleChoiceFilter(
+        queryset=SkosConcept.objects.filter(
+            collection__name="ner_genre"
+        ),
+        help_text=NerDataSet._meta.get_field('ner_genre').help_text,
+        label=NerDataSet._meta.get_field('ner_genre').verbose_name,
+        method=generous_concept_filter,
+        widget=autocomplete.Select2Multiple(
+            url="/vocabs-ac/specific-concept-ac/ner_genre",
+            attrs={
+                'data-placeholder': 'Autocomplete ...',
+                'data-minimum-input-length': 2,
+                },
+        )
+    )
+
+    class Meta:
+        model = NerDataSet
+        fields = [
+            'id',
+            'id',
+            'ner_name',
+            'ner_created',
+            'ner_description',
+            'ner_period',
+            'ner_genre',
+            ]
 
 
 class NerSampleListFilter(django_filters.FilterSet):
@@ -45,40 +91,4 @@ class NerSampleListFilter(django_filters.FilterSet):
             'text',
             'entities',
             'dataset',
-            ]
-
-
-
-class DatasetListFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(
-        lookup_expr='icontains',
-        help_text=Dataset._meta.get_field('name').help_text,
-        label=Dataset._meta.get_field('name').verbose_name
-    )
-    description = django_filters.CharFilter(
-        lookup_expr='icontains',
-        help_text=Dataset._meta.get_field('description').help_text,
-        label=Dataset._meta.get_field('description').verbose_name
-    )
-
-    class Meta:
-        model = Dataset
-        fields = [
-            'id',
-            'name',
-            'created',
-            'session',
-            'description',
-            ]
-
-
-class ExampleListFilter(django_filters.FilterSet):
-
-    class Meta:
-        model = Example
-        fields = [
-            'id',
-            'input_hash',
-            'task_hash',
-            'link',
             ]

@@ -6,15 +6,16 @@ from crispy_forms.bootstrap import Accordion, AccordionGroup
 
 from vocabs.models import SkosConcept
 from . models import (
-    Dataset,
+    NerDataSet,
     NerSample,
+    Dataset,
     Example
 )
 
 
-class DatasetFilterFormHelper(FormHelper):
+class NerDataSetFilterFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
-        super(DatasetFilterFormHelper, self).__init__(*args, **kwargs)
+        super(NerDataSetFilterFormHelper, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.form_class = 'genericFilterForm'
         self.form_method = 'GET'
@@ -30,25 +31,30 @@ class DatasetFilterFormHelper(FormHelper):
                 AccordionGroup(
                     'Advanced search',
                     'id',
-                    'name',
-                    'created',
-                    'meta',
-                    'session',
-                    'description',
+                    'ner_name',
+                    'ner_created',
+                    'ner_description',
+                    'ner_period',
+                    'ner_genre',
                     css_id="more"
                     ),
                 )
             )
 
 
-class DatasetForm(forms.ModelForm):
+class NerDataSetForm(forms.ModelForm):
+    ner_genre = forms.ModelMultipleChoiceField(
+        required=False,
+        label="genre",
+        queryset=SkosConcept.objects.filter(collection__name="ner_genre")
+    )
 
     class Meta:
-        model = Dataset
+        model = NerDataSet
         fields = "__all__"
 
     def __init__(self, *args, **kwargs):
-        super(DatasetForm, self).__init__(*args, **kwargs)
+        super(NerDataSetForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.form_class = 'form-horizontal'
@@ -78,7 +84,6 @@ class NerSampleFilterFormHelper(FormHelper):
                     'input_hash',
                     'task_hash',
                     'text',
-                    'orig_example',
                     'entities',
                     'dataset',
                     css_id="more"
@@ -100,49 +105,6 @@ class NerSampleForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(NerSampleForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = True
-        self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-md-3'
-        self.helper.field_class = 'col-md-9'
-        self.helper.add_input(Submit('submit', 'save'),)
-
-class ExampleFilterFormHelper(FormHelper):
-    def __init__(self, *args, **kwargs):
-        super(ExampleFilterFormHelper, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.form_class = 'genericFilterForm'
-        self.form_method = 'GET'
-        self.helper.form_tag = False
-        self.add_input(Submit('Filter', 'Search'))
-        self.layout = Layout(
-            Fieldset(
-                'Basic search options',
-                'id',
-                css_id="basic_search_fields"
-                ),
-            Accordion(
-                AccordionGroup(
-                    'Advanced search',
-                    'id',
-                    'input_hash',
-                    'task_hash',
-                    'content',
-                    'link',
-                    css_id="more"
-                    ),
-                )
-            )
-
-
-class ExampleForm(forms.ModelForm):
-
-    class Meta:
-        model = Example
-        fields = "__all__"
-
-    def __init__(self, *args, **kwargs):
-        super(ExampleForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.form_class = 'form-horizontal'

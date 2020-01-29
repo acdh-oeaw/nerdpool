@@ -19,8 +19,8 @@ django.setup()
 
 from django.conf import settings
 
-from myprodigy.models import NerSample, Dataset
-from myprodigy.utils import nersample_from_answer
+from myprodigy.models import NerSample, Dataset, NerDataSet
+from myprodigy.utils import nersample_from_answer, nerds_from_ds
 from vocabs.models import SkosConceptScheme
 
 
@@ -116,12 +116,12 @@ def nerdpool_make_gold(
     stream = make_tasks(nlp, stream)
 
     def update(answers):
+        ner_dataset = nerds_from_ds(dataset)
         scheme, _ = SkosConceptScheme.objects.get_or_create(
             dc_title=NERDPOOL_DEFAULT_NER_SCHEME
         )
-        cur_dataset = Dataset.objects.get(name=dataset)
         for x in answers:
-            nersample_from_answer(x, cur_dataset, scheme)
+            nersample_from_answer(x, ner_dataset, scheme)
 
     return {
         "view_id": "ner_manual",
