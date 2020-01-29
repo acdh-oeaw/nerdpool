@@ -17,8 +17,16 @@ sys.path.append('/home/csae8092/repos/nerdpool')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nerdpool.settings.pg_local')
 django.setup()
 
-from myprodigy.models import NerSample, Dataset
+from django.config import settings
 
+from myprodigy.models import NerSample, Dataset
+from myprodigy.utils import nersample_from_answer
+from vocabs.models import SkosConceptScheme
+
+
+NERDPOOL_DEFAULT_NER_SCHEME = getattr(
+    settings, 'NERDPOOL_DEFAULT_NER_SCHEME', "NER Labels"
+)
 
 @recipe(
     "nerdpool.ner",
@@ -108,16 +116,12 @@ def nerdpool_make_gold(
     stream = make_tasks(nlp, stream)
 
     def update(answers):
+        scheme, _ = SkosConceptScheme.object.get_or_create(
+            dc_title=NERDPOOL_DEFAULT_NER_SCHEME
+        )
         cur_dataset = Dataset.objects.get(name=dataset)
         for x in answers:
-            my_sample, _ = NerSample.objects.get_or_create(
-                input_hash=x['_input_hash'],
-                task_hash=x['_task_hash']
-            )
-            my_sample.text = x['text']
-            my_sample.dataset.add(cur_dataset)
-            my_sample.save()
-            print(my_sample.text)
+            nersample_from_answer(x, cur_dataset, scheme)
 
     return {
         "view_id": "ner_manual",
