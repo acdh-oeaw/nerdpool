@@ -50,7 +50,6 @@ class NerDataSetListFilter(django_filters.FilterSet):
         model = NerDataSet
         fields = [
             'id',
-            'id',
             'ner_name',
             'ner_created',
             'ner_description',
@@ -66,9 +65,7 @@ class NerSampleListFilter(django_filters.FilterSet):
         label=NerSample._meta.get_field('text').verbose_name
     )
     entities = django_filters.ModelMultipleChoiceFilter(
-        queryset=SkosConcept.objects.filter(
-            collection__name="entities"
-        ),
+        queryset=SkosConcept.objects.all(),
         help_text=NerSample._meta.get_field('entities').help_text,
         label=NerSample._meta.get_field('entities').verbose_name,
         method=generous_concept_filter,
@@ -85,9 +82,6 @@ class NerSampleListFilter(django_filters.FilterSet):
         model = NerSample
         fields = [
             'id',
-            'id',
-            'input_hash',
-            'task_hash',
             'text',
             'entities',
             'dataset',

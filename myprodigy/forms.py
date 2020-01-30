@@ -74,18 +74,15 @@ class NerSampleFilterFormHelper(FormHelper):
         self.layout = Layout(
             Fieldset(
                 'Basic search options',
-                'id',
+                'entities',
+                'dataset',
                 css_id="basic_search_fields"
                 ),
             Accordion(
                 AccordionGroup(
                     'Advanced search',
                     'id',
-                    'input_hash',
-                    'task_hash',
                     'text',
-                    'entities',
-                    'dataset',
                     css_id="more"
                     ),
                 )
@@ -96,7 +93,7 @@ class NerSampleForm(forms.ModelForm):
     entities = forms.ModelMultipleChoiceField(
         required=False,
         label="entities",
-        queryset=SkosConcept.objects.filter(collection__name="entities")
+        queryset=SkosConcept.objects.all()
     )
 
     class Meta:
