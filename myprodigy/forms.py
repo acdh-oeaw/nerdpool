@@ -72,13 +72,13 @@ class NerSampleFilterFormHelper(FormHelper):
         self.helper.form_tag = False
         self.add_input(Submit('Filter', 'Search'))
         self.layout = Layout(
-            Fieldset(
-                'Basic search options',
-                'entities',
-                'dataset',
-                css_id="basic_search_fields"
-                ),
             Accordion(
+                AccordionGroup(
+                    'Basic search options',
+                    'entities',
+                    'dataset',
+                    css_id="basic_search_fields"
+                ),
                 AccordionGroup(
                     'Advanced search',
                     'id',
