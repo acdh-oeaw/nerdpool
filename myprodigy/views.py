@@ -71,7 +71,7 @@ class NerSampleListView(GenericListView):
     formhelper_class = NerSampleFilterFormHelper
     table_class = NerSampleTable
     init_columns = [
-        'id',
+        'id', 'text',
     ]
     enable_merge = False
 
