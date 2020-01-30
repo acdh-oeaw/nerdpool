@@ -125,6 +125,13 @@ class NerSample(models.Model):
         verbose_name="text",
         help_text="text"
         )
+    answer = models.CharField(
+        blank=True, null=True,
+        max_length=50,
+        default="accept",
+        verbose_name="answer",
+        help_text="answer"
+        )
     orig_example = JSONField(
         blank=True, null=True,
         verbose_name="orig example",

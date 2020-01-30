@@ -42,6 +42,7 @@ def nersample_from_answer(answer, nerdataset, scheme):
     )
     my_sample.text = answer['text']
     my_sample.orig_example = answer
+    my_sample.answer = f"{answer['answer']}"
     my_sample.dataset.add(nerdataset)
     labels = get_used_labels(answer)
     if labels:
