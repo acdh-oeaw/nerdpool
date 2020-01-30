@@ -4,6 +4,8 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.postgres.fields import DateRangeField, JSONField
 
+from spacy.displacy import EntityRenderer
+
 from vocabs.models import SkosConcept
 
 from browsing.browsing_utils import model_to_dict
@@ -62,7 +64,7 @@ class NerDataSet(models.Model):
         verbose_name = "ner data set"
 
     def __str__(self):
-        return "{}".format(self.id)
+        return "{}".format(self.ner_name)
 
     def field_dict(self):
         return model_to_dict(self)
@@ -151,10 +153,17 @@ class NerSample(models.Model):
         verbose_name = "ner sample"
 
     def __str__(self):
-        return "{}".format(self.id)
+        ents = " ".join([x.pref_label for x in self.entities.all()])
+        return f"Text: {self.text[:25]}...; Entities: ({ents})"
 
     def field_dict(self):
         return model_to_dict(self)
+
+    def get_spans(self):
+        return self.orig_example['spans']
+
+    def as_html(self):
+        return EntityRenderer().render_ents(self.text, self.get_spans(), None)
 
     @classmethod
     def get_listview_url(self):

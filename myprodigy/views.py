@@ -23,7 +23,7 @@ class NerDataSetListView(GenericListView):
     formhelper_class = NerDataSetFilterFormHelper
     table_class = NerDataSetTable
     init_columns = [
-        'id',
+        'id', 'ner_name'
     ]
     enable_merge = False
 
@@ -79,7 +79,7 @@ class NerSampleListView(GenericListView):
 class NerSampleDetailView(BaseDetailView):
 
     model = NerSample
-    template_name = 'myprodigy/generic_detail.html'
+    template_name = 'myprodigy/nersample_detail.html'
 
 
 class NerSampleCreate(BaseCreateView):
