@@ -5,6 +5,11 @@ from . import views
 app_name = 'myprodigy'
 urlpatterns = [
     url(
+        r'^annotator/detail/(?P<pk>[0-9]+)$',
+        views.UserDetailView.as_view(),
+        name='user_detail'
+    ),
+    url(
         r'^nerdataset/$',
         views.NerDataSetListView.as_view(),
         name='nerdataset_browse'

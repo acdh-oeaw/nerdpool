@@ -58,7 +58,7 @@ class NerDataSet(models.Model):
         )
     ner_annotator = models.ManyToManyField(
         User,
-        related_name='rvn_annotates',
+        related_name='rvn_part_of_dataset',
         blank=True,
         verbose_name="Annotators",
         help_text="Annotators working on this project"
@@ -168,6 +168,7 @@ class NerSample(models.Model):
     annotator = models.ForeignKey(
         User,
         models.SET_NULL,
+        related_name='rvn_annotates',
         blank=True,
         null=True,
         verbose_name="annotator",
