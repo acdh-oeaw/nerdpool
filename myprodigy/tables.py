@@ -27,7 +27,6 @@ class NerSampleTable(tables.Table):
 
     id = tables.LinkColumn(verbose_name='ID')
     text = tables.columns.TemplateColumn("{{ record.as_html|safe}}")
-    merge = MergeColumn(verbose_name='keep | remove', accessor='pk')
     entities = tables.columns.ManyToManyColumn()
     dataset = tables.columns.ManyToManyColumn()
 

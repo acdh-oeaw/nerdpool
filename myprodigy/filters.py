@@ -85,4 +85,5 @@ class NerSampleListFilter(django_filters.FilterSet):
             'text',
             'entities',
             'dataset',
+            'annotator',
             ]

@@ -83,6 +83,7 @@ class NerSampleFilterFormHelper(FormHelper):
                     'Advanced search',
                     'id',
                     'text',
+                    'annotator',
                     css_id="more"
                     ),
                 )
