@@ -90,6 +90,20 @@
                   </ul>
                 </td>
               </tr>
+              <tr>
+                <th>
+                  Annotator
+                </th>
+                <td>
+                  <ul>
+                    {% if object.annotator %}
+                      {{ object.annotator }}
+                    {% else %}
+                      anonym
+                    {% endif %}
+                  </ul>
+                </td>
+              </tr>
             </table>
         </div>
         <div class="col-md-6">
