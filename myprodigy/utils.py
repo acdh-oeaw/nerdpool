@@ -1,13 +1,15 @@
 from vocabs.models import SkosConcept
 
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+
 from . models import NerDataSet, NerSample, Dataset
 
 
 def nerds_from_ds(dataset_name):
     ds = Dataset.objects.get(name=dataset_name)
     ner_dataset, _ = NerDataSet.objects.get_or_create(
-        ner_name=ds.name,
-        ner_created=ds.created
+        ner_name=ds.name
     )
     if ner_dataset.ner_meta:
         pass
@@ -28,9 +30,17 @@ def get_used_labels(sample):
 def get_concepts_from_labels(labels, dataset, scheme):
     label_obj = []
     for x in labels:
-        item, _ = SkosConcept.objects.get_or_create(pref_label=f"{x} ({dataset})")
-        item.scheme.add(scheme)
-        item.save()
+        broader, created = SkosConcept.objects.get_or_create(pref_label=f"{x}")
+        if created:
+            broader.scheme.add(scheme)
+            broader.save()
+        else:
+            pass
+        item, item_created = SkosConcept.objects.get_or_create(pref_label=f"{x} ({dataset})")
+        if item_created:
+            item.scheme.add(scheme)
+            item.broader_concept = broader
+            item.save()
         label_obj.append(item)
     return label_obj
 
@@ -40,8 +50,17 @@ def nersample_from_answer(answer, nerdataset, scheme):
         input_hash=answer['_input_hash'],
         task_hash=answer['_task_hash']
     )
+    annotator = answer.get('_session_id', None)
+    if annotator:
+        annotator_str = annotator.split('-')[-1]
+        try:
+            annotator_user = User.objects.get(username=annotator_str)
+            my_sample.annotator = annotator_user
+        except ObjectDoesNotExist:
+            pass
     my_sample.text = answer['text']
     my_sample.orig_example = answer
+    my_sample.answer = f"{answer['answer']}"
     my_sample.dataset.add(nerdataset)
     labels = get_used_labels(answer)
     if labels:

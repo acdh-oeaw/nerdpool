@@ -115,7 +115,8 @@
                                         {{ user.get_username }}
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="nav-link" href="{% url 'webpage:user_logout' %}">log out <i class="feather-32" data-feather="log-out"></i></a>
+                                        <a class="nav-link" href="{% url 'myprodigy:user_detail' pk=user.id %}"><i class="feather-32" data-feather="user"></i></a>
+                                        <a class="nav-link" href="{% url 'webpage:user_logout' %}"><i class="feather-32" data-feather="log-out"></i></a>
                                     </div>
                                 </li>
                                 {% else %}

@@ -2,6 +2,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 from django.contrib.postgres.fields import DateRangeField, JSONField
 
 from spacy.displacy import EntityRenderer
@@ -55,6 +56,19 @@ class NerDataSet(models.Model):
         verbose_name="genre",
         help_text="genre"
         )
+    ner_annotator = models.ManyToManyField(
+        User,
+        related_name='rvn_part_of_dataset',
+        blank=True,
+        verbose_name="Annotators",
+        help_text="Annotators working on this project"
+        )
+    ner_startscript = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="start a server",
+        help_text="Command prompt to start a prodigy server"
+    )
 
     class Meta:
 
@@ -125,6 +139,13 @@ class NerSample(models.Model):
         verbose_name="text",
         help_text="text"
         )
+    answer = models.CharField(
+        blank=True, null=True,
+        max_length=50,
+        default="accept",
+        verbose_name="answer",
+        help_text="answer"
+        )
     orig_example = JSONField(
         blank=True, null=True,
         verbose_name="orig example",
@@ -144,6 +165,15 @@ class NerSample(models.Model):
         verbose_name="dataset",
         help_text="dataset"
         )
+    annotator = models.ForeignKey(
+        User,
+        models.SET_NULL,
+        related_name='rvn_annotates',
+        blank=True,
+        null=True,
+        verbose_name="annotator",
+        help_text="Creator of the Annotation"
+    )
 
     class Meta:
 
