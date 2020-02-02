@@ -48,3 +48,4 @@ wasabi==0.4.2
 websockets==8.1
 zipp==0.6.0
 rdflib
+psutil

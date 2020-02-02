@@ -270,4 +270,7 @@ class Example(models.Model):
 class ProdigyServer(models.Model):
     server_hash = models.CharField(unique=True, max_length=250)
     port = models.IntegerField()
-    users = models.ManyToManyField(to=User)
+    dataset = models.ForeignKey('NerDataSet', on_delete=models.CASCADE)
+
+    def get_absolute_url(self):
+        return "http://test.at"

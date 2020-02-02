@@ -1,15 +1,15 @@
 import os
+import signal
 import uuid
 from subprocess import Popen
-
-import prodigy
+import psutil
+from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import asyncio
+from django.conf import settings
 
-from myprodigy.models import ProdigyServer
+from myprodigy.models import ProdigyServer, NerDataSet
 
-loop = asyncio.get_event_loop()
 
 nginx_templ = """                        
 server {{
@@ -36,7 +36,7 @@ nginx_loc = """
 
 server {{
     listen 81;
-    server_name {hash}.sisyphos.arz.oeaw.ac.at;
+    server_name {hash}.{prodigy_base_url};
     
     location / {{               
         proxy_pass http://nerdpool_prodigy:{port};
@@ -44,7 +44,16 @@ server {{
 }}
 """
 
-def start_prodigy_server(prodigy_attrs, new=False):
+PRODIGY_BASE_URL = getattr(settings, 'PRODIGY_BASE_URL', 'pd.sisyphos.arz.oeaw.ac.at')
+
+def create_prodigy_command(ds):
+    dsc_lst = ds.ner_startscript.split(' ')
+    dsc_lst.insert(1, ds.ner_name)
+    sc = ' '.join(dsc_lst)
+    return sc
+
+
+def start_prodigy_server(dataset_id, new=False):
     if new:
         ports = list(ProdigyServer.objects.all().values_list('port', flat=True).order_by('port'))
         if len(ports) == 0:
@@ -52,23 +61,68 @@ def start_prodigy_server(prodigy_attrs, new=False):
         else:
             port = ports[-1]+1
         uid = uuid.uuid1()
-        ProdigyServer.objects.create(port=port, server_hash=uid)
+        ProdigyServer.objects.create(port=port, server_hash=uid, dataset_id=int(dataset_id))
         lc = ""
         for s in ProdigyServer.objects.all():
-            lc += nginx_loc.format(hash=s.server_hash, port=s.port)
+            lc += nginx_loc.format(hash=s.server_hash, port=s.port, prodigy_base_url=prodigy_base_url)
             print(nginx_templ.format(loc=lc))
         with open('/nginx/default.conf', 'w') as out:
             out.write(nginx_templ.format(loc=lc))
-    Popen([f'PRODIGY_PORT={port} prodigy {prodigy_attrs.format(uid=uid)}'], shell=True,
+    ds = NerDataSet.objects.get(pk=dataset_id)
+    sc = create_prodigy_command(ds)
+    if not new:
+        port = ds.prodigyserver_set.first().port
+        uid = ds.prodigyserver_set.first().server_hash
+    Popen([f'PRODIGY_PORT={port} prodigy {sc}'], shell=True,
           stdin=None, stdout=None, stderr=None, close_fds=True)
     return uid
+
+
+
+def search_for_server(uid):
+    proc_iter = psutil.process_iter(attrs=["pid", "name", "cmdline"])
+    ds = ProdigyServer.objects.get(server_hash=uid).dataset
+    sc = create_prodigy_command(ds)
+    proc = any(sc in ' '.join(p.info["cmdline"]) for p in proc_iter)
+    return proc
+
+
+def toggle_prodigy_server(dataset_id):
+    ps = ProdigyServer.objects.select_related('dataset').get(dataset_id=dataset_id)
+    ds = ps.dataset
+    if search_for_server(ps.server_hash):
+        proc_iter = psutil.process_iter(attrs=["pid", "name", "cmdline"])
+        sc = create_prodigy_command(ds)
+        for p in proc_iter:
+            if sc in ' '.join(p.info["cmdline"]):
+                os.kill(p.info["pid"], signal.SIGKILL)
+        return False, ps.server_hash
+    else:
+        uid = start_prodigy_server(ds.pk)
+        return True, uid
 
 
 class ProdigyServers(APIView):
 
     def post(self, request):
-        prod_attr = "ner.manual {uid} de ./test_data.jsonl --label PERSON,ORG"
-        uid = start_prodigy_server(prod_attr, new=True)
-        #loop.run_in_executor(None, prodigy.serve("ner.manual ner_news_headlines de ../test_data.jsonl --label PERSON,ORG", port=8081))
-        print('went through', uid)
-        return Response({'url': f'{uid}.sisyphos.arz.oeaw.ac.at'})
+        dataset_id = request.data['dataset']
+        new = request.data.get('new', None)
+        toggle = request.data.get('toggle', None)
+        if toggle:
+            res = toggle_prodigy_server(dataset_id)
+            return Response({'server_up': res[0], 'uid': res[1]})
+        else:
+            uid = start_prodigy_server(dataset_id=dataset_id, new=new)
+            return Response({'url': f"{uid}.{PRODIGY_BASE_URL}"})
+
+    def get(self, request):
+        pk = request.query_params.get('uid', None)
+        if pk:
+            if ProdigyServer.objects.filter(server_hash=pk).count() == 0:
+                raise  Http404
+            res = search_for_server(pk)
+            return Response({'server_up': res, 'uid': pk})
+        else:
+            raise Http404
+
+            

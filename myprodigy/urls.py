@@ -15,6 +15,11 @@ urlpatterns = [
         name='nerdataset_browse'
     ),
     url(
+        r'^servers/$',
+        views.ServerListView.as_view(),
+        name='server_browse'
+    ),
+    url(
         r'^nerdataset/detail/(?P<pk>[0-9]+)$',
         views.NerDataSetDetailView.as_view(),
         name='nerdataset_detail'

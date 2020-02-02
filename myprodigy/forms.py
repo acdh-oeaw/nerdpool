@@ -5,6 +5,7 @@ from crispy_forms.layout import Submit,  Layout, Fieldset, Div, MultiField, HTML
 from crispy_forms.bootstrap import Accordion, AccordionGroup
 
 from vocabs.models import SkosConcept
+from .api_views import start_prodigy_server
 from . models import (
     NerDataSet,
     NerSample,
@@ -48,6 +49,14 @@ class NerDataSetForm(forms.ModelForm):
         label="genre",
         queryset=SkosConcept.objects.filter(collection__name="ner_genre")
     )
+    server = forms.BooleanField(label="Start Server?")
+
+    def save(self):
+        server = self.cleaned_data.pop('server')
+        no = super(NerDataSetForm, self).save()
+        if server:
+            start_prodigy_server(dataset_id=no.pk, new=True)
+
 
     class Meta:
         model = NerDataSet
@@ -109,3 +118,25 @@ class NerSampleForm(forms.ModelForm):
         self.helper.label_class = 'col-md-3'
         self.helper.field_class = 'col-md-9'
         self.helper.add_input(Submit('submit', 'save'),)
+
+
+class ProdigyServerFilterFormHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(ProdigyServerFilterFormHelper, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.form_class = 'genericFilterForm'
+        self.form_method = 'GET'
+        self.helper.form_tag = False
+        self.add_input(Submit('Filter', 'Search'))
+        self.layout = Layout(
+            Accordion(
+                AccordionGroup(
+                    'Basic search options',
+                    css_id="basic_search_fields"
+                ),
+                AccordionGroup(
+                    'id',
+                    css_id="more"
+                ),
+            )
+        )

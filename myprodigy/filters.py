@@ -6,12 +6,12 @@ from dal import autocomplete
 
 from vocabs.filters import generous_concept_filter
 from vocabs.models import SkosConcept
-from . models import (
+from .models import (
     NerDataSet,
     NerSample,
     Dataset,
-    Example
-)
+    Example,
+    ProdigyServer)
 
 
 class NerDataSetListFilter(django_filters.FilterSet):
@@ -87,3 +87,15 @@ class NerSampleListFilter(django_filters.FilterSet):
             'dataset',
             'annotator',
             ]
+
+class ProdigyServerListFilter(django_filters.FilterSet):
+    server_hash = django_filters.CharFilter(
+        lookup_expr='icontains'
+    )
+
+    class Meta:
+        model = ProdigyServer
+        fields = [
+            'id',
+            'server_hash'
+        ]

@@ -52,6 +52,42 @@
         })();
       </script>
     <!-- End Matomo Code -->
+    <script type="text/javascript">
+        function check_status(uid) {
+            $.ajax({
+                    type: 'GET',
+                    url: "{% url 'myprodigy:api_prodigy_servers' %}",
+                    data: {'uid': uid},
+                    success: function(data) {
+                        $('#'+data.uid).empty();
+                        if (data.server_up) {
+                            $('#'+data.uid).append('<span class="badge badge-success">up</span>')
+                        } else {
+                            $('#'+data.uid).append('<span class="badge badge-danger">down</span>')
+                        }
+                    }
+                }
+            )
+        }
+    </script>
+    <script type="text/javascript">
+        function toggle_server(ds) {
+            $.ajax({
+                    type: 'POST',
+                    url: "{% url 'myprodigy:api_prodigy_servers' %}",
+                    data: {'dataset': ds, 'toggle': true},
+                    success: function(data) {
+                        $('#'+data.uid).empty();
+                        if (data.server_up) {
+                            $('#'+data.uid).append('<span class="badge badge-success">up</span>')
+                        } else {
+                            $('#'+data.uid).append('<span class="badge badge-danger">down</span>')
+                        }
+                    }
+                }
+            )
+        }
+    </script>
     {% block scriptHeader %}
     {% endblock %}
 </head>
