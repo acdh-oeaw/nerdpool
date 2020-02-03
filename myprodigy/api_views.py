@@ -64,7 +64,7 @@ def start_prodigy_server(dataset_id, new=False):
         ProdigyServer.objects.create(port=port, server_hash=uid, dataset_id=int(dataset_id))
         lc = ""
         for s in ProdigyServer.objects.all():
-            lc += nginx_loc.format(hash=s.server_hash, port=s.port, prodigy_base_url=prodigy_base_url)
+            lc += nginx_loc.format(hash=s.server_hash, port=s.port, prodigy_base_url=PRODIGY_BASE_URL)
             print(nginx_templ.format(loc=lc))
         with open('/nginx/default.conf', 'w') as out:
             out.write(nginx_templ.format(loc=lc))
