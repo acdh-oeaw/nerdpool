@@ -65,7 +65,6 @@ def start_prodigy_server(dataset_id, new=False):
         lc = ""
         for s in ProdigyServer.objects.all():
             lc += nginx_loc.format(hash=s.server_hash, port=s.port, prodigy_base_url=PRODIGY_BASE_URL)
-            print(nginx_templ.format(loc=lc))
         with open('/nginx/default.conf', 'w') as out:
             out.write(nginx_templ.format(loc=lc))
     ds = NerDataSet.objects.get(pk=dataset_id)

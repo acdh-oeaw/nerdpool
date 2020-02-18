@@ -7,14 +7,15 @@ from typing import List, Optional, Union, Iterable, Dict, Any
 from prodigy.components.preprocess import split_sentences, add_tokens
 from prodigy.components.loaders import get_stream
 from prodigy.core import recipe
+from prodigy.recipes.ner import get_labels_from_ner
 from prodigy.util import set_hashes, log, split_string, get_labels
 from prodigy.util import INPUT_HASH_ATTR, TASK_HASH_ATTR, msg
 # configure django
 import os
 import sys
 import django
-sys.path.append('/home/csae8092/repos/nerdpool')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nerdpool.settings.pg_local')
+sys.path.append('/nerdpool/nerdpool')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nerdpool.settings.server')
 django.setup()
 
 from django.conf import settings
@@ -28,7 +29,7 @@ NERDPOOL_DEFAULT_NER_SCHEME = getattr(
     settings, 'NERDPOOL_DEFAULT_NER_SCHEME', "NER Labels"
 )
 
-@recipe(
+@prodigy.recipe(
     "nerdpool.ner",
     # fmt: off
     dataset=(

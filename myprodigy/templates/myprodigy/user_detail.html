@@ -80,6 +80,18 @@
                   You created {{ samples|length }} of {{ all_samples }} Annotations.
                 </td>
               </tr>
+            <tr>
+                <td>
+                    Servers
+                </td>
+                <td>
+                    {% for s in servers %}
+                    <li>
+                        <a href="{{ s.get_external_url }}/?session={{ object.username }}">server for DS {{ s.dataset }}</a>
+                    </li>
+                    {% endfor %}
+                </td>
+            </tr>
             </table>
         </div>
         <div class="col-md-6">

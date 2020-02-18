@@ -41,9 +41,11 @@ class UserDetailView(BaseDetailView):
         ds = NerDataSet.objects.filter(ner_annotator=obj)
         samples = NerSample.objects.filter(annotator=obj)
         all_samples = NerSample.objects.all().count()
+        servers = ProdigyServer.objects.filter(dataset__in=ds)
         context['datasets'] = ds
         context['samples'] = samples
         context['all_samples'] = all_samples
+        context['servers'] = servers
         return context
 
 

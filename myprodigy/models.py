@@ -94,9 +94,6 @@ class NerDataSet(models.Model):
     def get_absolute_url(self):
         return reverse('myprodigy:nerdataset_detail', kwargs={'pk': self.id})
 
-    def get_absolute_url(self):
-        return reverse('myprodigy:nerdataset_detail', kwargs={'pk': self.id})
-
     def get_delete_url(self):
         return reverse('myprodigy:nerdataset_delete', kwargs={'pk': self.id})
 
@@ -271,6 +268,9 @@ class ProdigyServer(models.Model):
     server_hash = models.CharField(unique=True, max_length=250)
     port = models.IntegerField()
     dataset = models.ForeignKey('NerDataSet', on_delete=models.CASCADE)
+
+    def get_external_url(self):
+        return f"https://{self.server_hash}.pd.sisyphos.arz.oeaw.ac.at"
 
     def get_absolute_url(self):
         return "http://test.at"
