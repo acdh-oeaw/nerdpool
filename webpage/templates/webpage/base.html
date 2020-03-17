@@ -13,11 +13,11 @@
         <meta name="author" content="{{ metadata.author }}">
     {% endblock %}
     <!-- favicons -->
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ SHARED_URL }}favicon/apple-touch-icon.png"/>
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ SHARED_URL }}favicon/favicon-32x32.png"/>
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ SHARED_URL }}favicon/favicon-16x16.png"/>
-        <link rel="manifest" href="{{ SHARED_URL }}favicon/manifest.json"/>
-        <link rel="mask-icon" href="{{ SHARED_URL }}favicon/safari-pinned-tab.svg" color="#00aba9"/>
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ SHARED_URL }}acdh-common-assets/favicon/apple-touch-icon.png"/>
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ SHARED_URL }}acdh-common-assets/favicon/favicon-32x32.png"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ SHARED_URL }}acdh-common-assets/favicon/favicon-16x16.png"/>
+        <!-- <link rel="manifest" href="{{ SHARED_URL }}acdh-common-assets/favicon/manifest.json"/> -->
+        <link rel="mask-icon" href="{{ SHARED_URL }}acdh-common-assets/favicon/safari-pinned-tab.svg" color="#00aba9"/>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css" />
 	<meta name="theme-color" content="#ffffff"/>
     <!--favicons end -->
@@ -99,7 +99,7 @@
                 <div class="container-fluid">
                     <!-- Your site title as branding in the menu -->
                     <a href="/" class="navbar-brand custom-logo-link" rel="home" itemprop="url">
-                        <img src="{{ PROJECT_LOGO }}" class="img-fluid" alt="{% projects_metadata 'title' %}" itemprop="{% projects_metadata 'title' %}"/>
+                        <img src="{% static 'webpage/img/project-logo.png' %}" class="img-fluid" alt="{% projects_metadata 'title' %}" itemprop="{% projects_metadata 'title' %}"/>
                     </a><!-- end custom logo -->
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"/>
