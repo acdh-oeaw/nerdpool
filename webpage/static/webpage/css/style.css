@@ -10,7 +10,7 @@ body {
 }
 
 .navbar {
-	border-bottom: 5px solid #254aa5;;
+	border-bottom: 5px solid #BA2025;;
 }
 
 span.select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -145,7 +145,7 @@ footer {
 }
 .title-index {
     font-weight: 900;
-    color: #254aa5;
+    color: #BA2025;
     font-size: 350%;
 }
 @media (max-width: 768px) {
@@ -165,13 +165,13 @@ footer {
 .hr-index {
     height: 4px;
     border: 0;
-    background: #254aa5;
+    background: #BA2025;
     width: 40%;
     margin-top: 40px;
     margin-bottom: 40px;
 }
 .h2-index {
-    color:#254aa5;
+    color:#BA2025;
     font-weight: 800;
     text-align: center;
 }
@@ -199,18 +199,18 @@ footer {
     /*margin-left: 10px;
     margin-right: 10px;*/
     background-color: #ffffff;
-    color: #254aa5;
-    border: 3px solid #254aa5;
+    color: #BA2025;
+    border: 3px solid #BA2025;
     font-weight: 800;
     white-space: normal;
     padding-left: 40px;
     padding-right: 40px;
-    box-shadow: 0px 0px 0px 0px #254aa5;
+    box-shadow: 0px 0px 0px 0px #BA2025;
     transition: box-shadow 0.6s linear;
 }
 
 .btn-index:hover {
-   box-shadow: 0px 0px 0px 2px #254aa5;
+   box-shadow: 0px 0px 0px 2px #BA2025;
 
 }
 
