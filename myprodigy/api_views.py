@@ -38,7 +38,15 @@ server {{
     listen 81;
     server_name {hash}.{prodigy_base_url};
     
-    location / {{               
+    location / {{
+        satisfy any;    
+
+        allow 10.75.9.1/24;
+        allow 127.0.0.1;
+        deny all;
+
+        auth_basic "Provide a password";
+        auth_basic_user_file /nginx/conf.d/.passwd;  
         proxy_pass http://nerdpool_prodigy:{port};
     }}
 }}
