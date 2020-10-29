@@ -41,12 +41,13 @@ server {{
     location / {{
         satisfy any;    
 
-        allow 10.75.9.1/24;
+        allow 10.4.24.0/24;
         allow 127.0.0.1;
         deny all;
 
         auth_basic "Provide a password";
-        auth_basic_user_file /nginx/conf.d/.passwd;  
+        auth_basic_user_file /etc/
+        nginx/conf.d/.passwd;  
         proxy_pass http://nerdpool_prodigy:{port};
     }}
 }}
