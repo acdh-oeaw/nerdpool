@@ -46,8 +46,7 @@ server {{
         deny all;
 
         auth_basic "Provide a password";
-        auth_basic_user_file /etc/
-        nginx/conf.d/.passwd;  
+        auth_basic_user_file /etc/nginx/conf.d/.passwd;  
         proxy_pass http://nerdpool_prodigy:{port};
     }}
 }}
