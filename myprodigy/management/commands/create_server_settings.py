@@ -9,7 +9,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
             '--path',
-            default="/nginx/conf.d/default.conf"
+            default="/nginx/conf.d/default.conf",
             help='Full path of the nginx conf file to store',
         )
 
