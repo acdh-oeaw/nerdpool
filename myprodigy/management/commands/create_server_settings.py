@@ -9,12 +9,12 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
             '--path',
-            action='store_true',
+            default="/nginx/conf.d/default.conf"
             help='Full path of the nginx conf file to store',
         )
 
     def handle(self, *args, **kwargs):
-        path = kwargs.get('path', '/nginx/conf.d/default.conf')
+        path = kwargs.get('path', )
         lc = ""
         for s in ProdigyServer.objects.all():
             lc += nginx_loc.format(hash=s.server_hash, port=s.port, prodigy_base_url=PRODIGY_BASE_URL)
