@@ -29,6 +29,7 @@ NERDPOOL_DEFAULT_NER_SCHEME = getattr(
     settings, 'NERDPOOL_DEFAULT_NER_SCHEME', "NER Labels"
 )
 
+
 @prodigy.recipe(
     "nerdpool.ner",
     # fmt: off

@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.postgres.fields import DateRangeField, JSONField
 
 from spacy.displacy import EntityRenderer
 
@@ -32,7 +31,7 @@ class NerDataSet(models.Model):
         verbose_name="ner created",
         help_text="ner_created"
         )
-    ner_meta = JSONField(
+    ner_meta = models.JSONField(
         blank=True, null=True,
         verbose_name="ner meta",
         help_text="ner_meta"
@@ -143,7 +142,7 @@ class NerSample(models.Model):
         verbose_name="answer",
         help_text="answer"
         )
-    orig_example = JSONField(
+    orig_example = models.JSONField(
         blank=True, null=True,
         verbose_name="orig example",
         help_text="orig_example"
