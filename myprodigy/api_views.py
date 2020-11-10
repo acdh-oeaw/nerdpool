@@ -11,19 +11,19 @@ from django.conf import settings
 from myprodigy.models import ProdigyServer, NerDataSet
 
 
-nginx_templ = """                        
+nginx_templ = """
 server {{
     listen 81;
     server_name localhost;
 
-    location /static/ {{        
-        autoindex on;          
-        alias /staticfiles/;   
+    location /static/ {{
+        autoindex on;
+        alias /staticfiles/;
     }}
 
     location / {{
         proxy_pass http://nerdpool_prodigy:8000;
-        proxy_set_header Host $host;    
+        proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }}
@@ -37,22 +37,23 @@ nginx_loc = """
 server {{
     listen 81;
     server_name {hash}.{prodigy_base_url};
-    
+
     location / {{
-        satisfy any;    
+        satisfy any;
 
         allow 10.4.24.0/24;
         allow 127.0.0.1;
         deny all;
 
         auth_basic "Provide a password";
-        auth_basic_user_file /etc/nginx/conf.d/.passwd;  
+        auth_basic_user_file /etc/nginx/conf.d/.passwd;
         proxy_pass http://nerdpool_prodigy:{port};
     }}
 }}
 """
 
 PRODIGY_BASE_URL = getattr(settings, 'PRODIGY_BASE_URL', 'pd.sisyphos.arz.oeaw.ac.at')
+
 
 def create_prodigy_command(ds):
     dsc_lst = ds.ner_startscript.split(' ')
@@ -131,5 +132,3 @@ class ProdigyServers(APIView):
             return Response({'server_up': res, 'uid': pk})
         else:
             raise Http404
-
-            

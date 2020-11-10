@@ -147,6 +147,7 @@ class ServerListView(GenericListView):
         'toggle'
     ]
     enable_merge = False
+
     def get_queryset(self, **kwargs):
         qs = super(ServerListView, self).get_queryset(**kwargs)
         if self.request.user.is_superuser:
