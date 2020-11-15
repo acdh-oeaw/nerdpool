@@ -59,6 +59,8 @@ def create_prodigy_command(ds):
     dsc_lst = ds.ner_startscript.split(' ')
     dsc_lst.insert(1, ds.ner_name)
     sc = ' '.join(dsc_lst)
+    if "-F" not in sc:
+        sc += " -F /nerdpool/nerdpool/prodigy_recipes/__init__.py"
     return sc
 
 
