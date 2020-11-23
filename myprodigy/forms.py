@@ -49,14 +49,12 @@ class NerDataSetForm(forms.ModelForm):
         label="genre",
         queryset=SkosConcept.objects.filter(collection__name="ner_genre")
     )
-    # server = forms.BooleanField(label="Start Server?", required=False)
-    # 
-    # def save(self):
-    #     server = self.cleaned_data.pop('server')
-    #     no = super(NerDataSetForm, self).save()
-    #     if server:
-    #         start_prodigy_server(dataset_id=no.pk, new=True)
-    #     return no
+     
+    def save(self):
+        no = super(NerDataSetForm, self).save()
+        if no.prodigyserver_set.all().count() == 0:
+            start_prodigy_server(dataset_id=no.pk, new=True)
+        return no
 
 
     class Meta:
