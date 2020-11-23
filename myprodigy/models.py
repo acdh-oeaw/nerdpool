@@ -253,7 +253,7 @@ class ProdigyServer(models.Model):
     server_hash = models.CharField(unique=True, max_length=250)
     port = models.IntegerField()
     dataset = models.ForeignKey("NerDataSet", on_delete=models.CASCADE)
-    auto_start = models.BinaryField(default=True)
+    auto_start = models.BooleanField(default=True)
 
     def get_external_url(self):
         return f"https://{self.server_hash}.pd.sisyphos.arz.oeaw.ac.at"
