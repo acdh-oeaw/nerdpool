@@ -93,7 +93,7 @@ def start_prodigy_server(dataset_id, new=False):
     if os.path.isfile(f"/nerdpool/dataset-configs/{dataset_id}/prodigy.json"):
         base_cmd.insert(0, f"PRODIGY_HOME=/nerdpool/dataset-config/{dataset_id}")
     Popen(
-        bas_cmd,
+        base_cmd,
         shell=True,
         stdin=None,
         stdout=None,
