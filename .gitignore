@@ -14,10 +14,6 @@ cover/
 .idea
 
 # migrations
-vocabs/migrations/*
-bib/migrations/*
-webpage/migrations/*
-places/migrations/*
 
 appcreator
 output_*

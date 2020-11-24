@@ -89,8 +89,11 @@ def start_prodigy_server(dataset_id, new=False):
     if not new:
         port = ds.prodigyserver_set.first().port
         uid = ds.prodigyserver_set.first().server_hash
+    base_cmd = [f"PRODIGY_PORT={port} prodigy {sc}"]
+    if os.path.isfile(f"/nerdpool/dataset-configs/{dataset_id}/prodigy.json"):
+        base_cmd.insert(0, f"PRODIGY_HOME=/nerdpool/dataset-config/{dataset_id}")
     Popen(
-        [f"PRODIGY_PORT={port} prodigy {sc}"],
+        bas_cmd,
         shell=True,
         stdin=None,
         stdout=None,
