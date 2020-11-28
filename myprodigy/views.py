@@ -52,7 +52,7 @@ class UserDetailView(BaseDetailView):
 class NerDataSetDetailView(BaseDetailView):
 
     model = NerDataSet
-    template_name = 'myprodigy/generic_detail.html'
+    template_name = 'myprodigy/nerdataset_detail.html'
 
 
 class NerDataSetCreate(BaseCreateView):

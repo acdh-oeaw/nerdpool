@@ -167,20 +167,37 @@ class NerSample(models.Model):
         verbose_name = "ner sample"
 
     def __str__(self):
-        ents = " ".join([x.pref_label for x in self.entities.all()])
         try:
-            return f"Text: {self.text[:25]}...; Entities: ({ents})"
-        except TypeError:
+            ents = " ".join([x.pref_label for x in self.entities.all()])
+            try:
+                return f"Text: {self.text[:25]}...; Entities: ({ents})"
+            except TypeError:
+                return f"{self.id}"
+        except Exception as e:
             return f"{self.id}"
 
     def field_dict(self):
         return model_to_dict(self)
 
     def get_spans(self):
-        return self.orig_example["spans"]
+        try:
+            return self.orig_example["spans"]
+        except:
+            return [
+                {
+                    'start': None,
+                    'end': None,
+                    'label': None,
+                    'token_start': None,
+                    'token_end': None
+                },
+            ]
 
     def as_html(self):
-        return EntityRenderer().render_ents(self.text, self.get_spans(), None)
+        try:
+            return EntityRenderer().render_ents(self.text, self.get_spans(), None)
+        except:
+            """<strong>There is something wrong with this entity</strong>"""
 
     @classmethod
     def get_listview_url(self):
