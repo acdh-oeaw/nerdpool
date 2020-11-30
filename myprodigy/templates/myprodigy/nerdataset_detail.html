@@ -1,0 +1,135 @@
+{% extends "browsing/generic_detail.html" %}
+{% load static %}
+{% load webpage_extras %}
+{% block title %}{{ object.name }}{% endblock %}
+{% block scriptHeader %}
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/b-1.6.2/b-html5-1.6.2/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/b-1.6.2/b-html5-1.6.2/datatables.min.js"></script>
+{% endblock scriptHeader %}
+
+{% block custom %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Basic Information</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th>
+                                {% get_verbose_name nerdataset "ner_created" %}
+                            </th>
+                            <td>
+                                {{ object.ner_created}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {% get_verbose_name nerdataset "ner_meta" %}
+                            </th>
+                            <td>
+                                {{ object.ner_meta}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {% get_verbose_name nerdataset "ner_description" %}
+                            </th>
+                            <td>
+                                {{ object.ner_description}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {% get_verbose_name nerdataset "ner_period" %}
+                            </th>
+                            <td>
+                                {{ object.ner_period}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {% get_verbose_name nerdataset "ner_genre" %}
+                            </th>
+                            <td>
+                              <ul>
+                                {% for x in object.ner_genre.all %}
+                                  <li><a href="{{ x.get_absolute_url }}">{{ x }}</a></li>
+                                {% endfor %}
+                              </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {% get_verbose_name nerdataset "ner_annotator" %}
+                            </th>
+                            <td>
+                              <ul>
+                                {% for x in object.ner_annotator.all %}
+                                  <li><a href="{{ x.get_absolute_url }}">{{ x }}</a></li>
+                                {% endfor %}
+                              </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {% get_verbose_name nerdataset "ner_startscript" %}
+                            </th>
+                            <td>
+                                {{ object.ner_startscript}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Annotationen</h4>
+                </div>
+                <div class="card-body">
+
+                    <div style="padding:0;">
+
+                      <table class="table table-bordered table-hover" id="example">
+                          <thead>
+                            <tr>
+                                <th>Annotation</th>
+                                <th>Tags</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              {% for x in object.rvn_has_nersample.all|slice:":25" %}
+                              <tr>
+                                <td><a href="{{ x.get_absolute_url }}">{{ x.as_html|safe }}</a></td>
+                                <td>
+                                  {% for y in x.entities.all %}
+                                  <li><a href="{{ y.get_absolute_url}}">{{ y }}</a></li>
+                                  {% endfor %}
+                                </td>
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                      </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script>
+      $(document).ready(function() {
+        $('#example').DataTable({
+          "pageLength": 50,
+          dom: 'Bfrtip',
+          buttons: [
+            'copy', 'csv'
+          ],
+          "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+          }
+        });
+
+      } );
+    </script>
+{% endblock custom %}
