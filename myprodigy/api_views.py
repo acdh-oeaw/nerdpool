@@ -92,6 +92,8 @@ def start_prodigy_server(dataset_id, new=False):
     base_cmd = [f"PRODIGY_PORT={port} prodigy {sc}"]
     if os.path.isfile(f"/nerdpool/dataset-configs/{dataset_id}/prodigy.json"):
         base_cmd[0] = f"PRODIGY_HOME=/nerdpool/dataset-configs/{dataset_id} {base_cmd[0]}"
+    else:
+        base_cmd[0] = f"PRODIGY_HOME=/config-nerdpool {base_cmd[0]}"
     Popen(
         base_cmd,
         shell=True,
