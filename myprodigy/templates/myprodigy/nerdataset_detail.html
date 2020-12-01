@@ -1,4 +1,4 @@
-{% extends "browsing/generic_detail.html" %}
+{% extends "myprodigy/generic_detail.html" %}
 {% load static %}
 {% load webpage_extras %}
 {% block title %}{{ object.name }}{% endblock %}
@@ -17,6 +17,14 @@
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered table-hover">
+                      <tr>
+                          <th>
+                              Number of Annotation Samples
+                          </th>
+                          <td>
+                              {{ object.rvn_has_nersample.all|length }}
+                          </td>
+                      </tr>
                         <tr>
                             <th>
                                 {% get_verbose_name nerdataset "ner_created" %}
@@ -61,6 +69,7 @@
                               </ul>
                             </td>
                         </tr>
+                          {% if user.is_authenticated and user in object.ner_annotator.all %}
                         <tr>
                             <th>
                                 {% get_verbose_name nerdataset "ner_annotator" %}
@@ -73,6 +82,8 @@
                               </ul>
                             </td>
                         </tr>
+                        {% endif %}
+                        {% if user.is_authenticated and user in object.ner_annotator.all %}
                         <tr>
                             <th>
                                 {% get_verbose_name nerdataset "ner_startscript" %}
@@ -81,13 +92,24 @@
                                 {{ object.ner_startscript}}
                             </td>
                         </tr>
+                        {% endif %}
+                        {% if user.is_authenticated and user in object.ner_annotator.all %}
+                        <tr>
+                            <th>
+                                {% get_verbose_name nerdataset "pw" %}
+                            </th>
+                            <td>
+                                {{ object.pw}}
+                            </td>
+                        </tr>
+                        {% endif %}
                     </table>
                 </div>
             </div>
         </div>
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Annotationen</h4>
+                    <h4 class="card-title">Annotationen <small>showing last 25</small></h4>
                 </div>
                 <div class="card-body">
 

@@ -28,7 +28,7 @@
         <h2 style="text-align: center;">
           <small><a href="{{ object.get_listview_url }}" title="back to listview"><small>{{ class_name }}</small></a></small>
             {{ object.as_html|safe }}
-          {% if user.is_authenticated %}
+          {% if user.is_superuser %}
             <a href="{{ object.get_edit_url }}" title="edit">
               <i data-feather="edit-3"></i>
             </a>

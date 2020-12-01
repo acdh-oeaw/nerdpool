@@ -22,6 +22,7 @@ class NerDataSetTable(tables.Table):
         model = NerDataSet
         sequence = ('id',)
         attrs = {"class": "table table-responsive table-hover"}
+        exclude = ('pw', 'ner_startscript')
 
 
 class NerSampleTable(tables.Table):
@@ -39,10 +40,14 @@ class NerSampleTable(tables.Table):
 
 class ProdigyServerTable(tables.Table):
     dataset = tables.Column(verbose_name="Dataset", linkify=True)
-    link = tables.columns.TemplateColumn(f"<a href='https://{{{{ record.server_hash }}}}.{getattr(settings, 'PRODIGY_BASE_URL', 'pd.sisyphos.arz.oeaw.ac.at')}'>{{{{ record.server_hash }}}}")
+    link = tables.columns.TemplateColumn(
+        f"<a href='https://{{{{ record.server_hash }}}}.{getattr(settings, 'PRODIGY_BASE_URL', 'pd.sisyphos.arz.oeaw.ac.at')}'>{{{{ record.server_hash }}}}"
+    )
     status = tables.columns.TemplateColumn("<div id={{ record.server_hash }}></div>")
     up = tables.columns.TemplateColumn(template_name='myprodigy/server_running.html')
-    toggle = tables.columns.TemplateColumn(template_name='myprodigy/prodigy_toggle_server.html', verbose_name="Toggle server")
+    toggle = tables.columns.TemplateColumn(
+        template_name='myprodigy/prodigy_toggle_server.html', verbose_name="Toggle server"
+    )
 
     class Meta:
         model = ProdigyServer

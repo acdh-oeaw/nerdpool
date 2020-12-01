@@ -2,8 +2,38 @@ from vocabs.models import SkosConcept
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 from . models import NerDataSet, NerSample, Dataset
+
+
+def limit_acces(qs, user):
+    if user.is_superuser:
+        pass
+    elif user.is_anonymous:
+        qs = qs.filter(is_public=True).distinct()
+    else:
+        qs = qs.filter(
+            Q(
+                ner_annotator=user
+            ) |
+            Q(
+                is_public=True
+            )
+        ).distinct()
+    return qs
+
+
+def test_access(object, user):
+    if user.is_superuser:
+        return True
+    elif user.is_anonymous:
+        return object.is_public
+    else:
+        if user in object.ner_annotator.all():
+            return True
+        else:
+            return False
 
 
 def nerds_from_ds(dataset_name):
