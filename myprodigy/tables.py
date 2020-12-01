@@ -41,7 +41,7 @@ class NerSampleTable(tables.Table):
 class ProdigyServerTable(tables.Table):
     dataset = tables.Column(verbose_name="Dataset", linkify=True)
     link = tables.columns.TemplateColumn(
-        f"<a href='https://{{{{ record.server_hash }}}}.{getattr(settings, 'PRODIGY_BASE_URL', 'pd.sisyphos.arz.oeaw.ac.at')}'>{{{{ record.server_hash }}}}"
+        f"<a href='{{{{ record.get_external_url }}}}'>{{{{ record.server_hash }}}}"
     )
     status = tables.columns.TemplateColumn("<div id={{ record.server_hash }}></div>")
     up = tables.columns.TemplateColumn(template_name='myprodigy/server_running.html')
