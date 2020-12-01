@@ -96,10 +96,30 @@
                         {% if user.is_authenticated and user in object.ner_annotator.all %}
                         <tr>
                             <th>
+                                {% get_verbose_name nerdataset "basic_auth_user" %}
+                            </th>
+                            <td>
+                                {{ object.basic_auth_user }}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if user.is_authenticated and user in object.ner_annotator.all %}
+                        <tr>
+                            <th>
                                 {% get_verbose_name nerdataset "pw" %}
                             </th>
                             <td>
-                                {{ object.pw}}
+                                {{ object.pw }}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if user.is_authenticated and user in object.ner_annotator.all and object.reverse_proxy%}
+                        <tr>
+                            <th>
+                                {% get_verbose_name nerdataset "reverse_proxy" %}
+                            </th>
+                            <td>
+                                <a href="{{ object.reverse_proxy }}?session={{ user.username }}">{{ object.reverse_proxy }}?session={{ user.username }}</a>
                             </td>
                         </tr>
                         {% endif %}

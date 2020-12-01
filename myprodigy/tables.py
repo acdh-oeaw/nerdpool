@@ -22,7 +22,7 @@ class NerDataSetTable(tables.Table):
         model = NerDataSet
         sequence = ('id',)
         attrs = {"class": "table table-responsive table-hover"}
-        exclude = ('pw', 'ner_startscript')
+        exclude = ('pw', 'ner_startscript', 'basic_auth_user', 'reverse_proxy')
 
 
 class NerSampleTable(tables.Table):
