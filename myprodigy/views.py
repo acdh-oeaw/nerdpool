@@ -173,3 +173,7 @@ class ServerListView(GenericListView):
             return qs.filter(dataset__ner_annotator=self.request.user)
         else:
             return HttpResponseForbidden()
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ServerListView, self).dispatch(*args, **kwargs)

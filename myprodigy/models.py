@@ -301,7 +301,10 @@ class ProdigyServer(models.Model):
     auto_start = models.BooleanField(default=True)
 
     def get_external_url(self):
-        return f"https://{self.server_hash}.pd.sisyphos.arz.oeaw.ac.at"
+        if f"{self.dataset.reverse_proxy}".startswith('http'):
+            return f"{self.dataset.reverse_proxy}"
+        else:
+            return f"https://{self.server_hash}.pd.sisyphos.arz.oeaw.ac.at"
 
     def get_absolute_url(self):
         return "http://test.at"
