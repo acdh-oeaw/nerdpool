@@ -104,6 +104,20 @@
                   </ul>
                 </td>
               </tr>
+              <tr>
+                <th>created</th>
+                <td>
+                  {{ object.created_at}}
+                </td>
+              </tr>
+              {% if object.updated_at %}
+              <tr>
+                <th>created</th>
+                <td>
+                  {{ object.updated_at }}
+                </td>
+              </tr>
+              {% endif %}
             </table>
         </div>
         <div class="col-md-6">

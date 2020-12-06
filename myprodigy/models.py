@@ -26,7 +26,7 @@ BASIC_AUTH_PASSWORD = os.environ.get('BASIC_AUTH_PASSWORD', 'no_basic_auth_pw_se
 
 
 class NerDataSet(models.Model):
-    ### NerDataSet(id, ner_name, ner_created, ner_meta, ner_description, ner_period) ###
+    """ NerDataSet(id, ner_name, ner_created, ner_meta, ner_description, ner_period) """
     ner_name = models.CharField(
         max_length=250, verbose_name="ner name", help_text="ner_name"
     )
@@ -93,6 +93,8 @@ class NerDataSet(models.Model):
         verbose_name="Reverse Proxy for Prodigy Server",
         help_text="Needs to be set up from SysAdmin."
     )
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
 
@@ -142,7 +144,7 @@ class NerDataSet(models.Model):
 
 
 class NerSample(models.Model):
-    ### NerSample(id, input_hash, task_hash, text, orig_example) ###
+    """ NerSample(id, input_hash, task_hash, text, orig_example) """
     input_hash = models.BigIntegerField(
         blank=True, null=True, verbose_name="input hash", help_text="input_hash"
     )
@@ -186,6 +188,8 @@ class NerSample(models.Model):
         verbose_name="annotator",
         help_text="Creator of the Annotation",
     )
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
 
