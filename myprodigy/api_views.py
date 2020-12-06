@@ -12,6 +12,7 @@ from django.conf import settings
 
 from . models import ProdigyServer, NerDataSet, NerSample
 from . serializers import NerSampleSerializer
+from . utils import limit_acces, test_access, limit_access_nersample, test_access_nersample
 
 
 class NerSampleViewSet(viewsets.ReadOnlyModelViewSet):
@@ -19,8 +20,13 @@ class NerSampleViewSet(viewsets.ReadOnlyModelViewSet):
     A simple ViewSet for NerSamples.
     """
 
-    queryset = NerSample.objects.all()
     serializer_class = NerSampleSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = NerSample.objects.all()
+        qs = limit_access_nersample(qs, user)
+        return qs
 
 
 nginx_templ = """

@@ -13,7 +13,7 @@ router.register(r'skoslabels', api_views.SkosLabelViewSet)
 router.register(r'skosnamespaces', api_views.SkosNamespaceViewSet)
 router.register(r'skosconceptschemes', api_views.SkosConceptSchemeViewSet)
 router.register(r'skosconcepts', api_views.SkosConceptViewSet)
-router.register(r'nersapmles', nerdpool_api_views.NerSampleViewSet)
+router.register(r'nersapmles', nerdpool_api_views.NerSampleViewSet, basename="nersample")
 
 
 urlpatterns = [
