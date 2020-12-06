@@ -6,9 +6,21 @@ import psutil
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import viewsets
+
 from django.conf import settings
 
-from myprodigy.models import ProdigyServer, NerDataSet
+from . models import ProdigyServer, NerDataSet, NerSample
+from . serializers import NerSampleSerializer
+
+
+class NerSampleViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    A simple ViewSet for NerSamples.
+    """
+
+    queryset = NerSample.objects.all()
+    serializer_class = NerSampleSerializer
 
 
 nginx_templ = """

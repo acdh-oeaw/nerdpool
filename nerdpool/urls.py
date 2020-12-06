@@ -2,8 +2,19 @@ from django.conf.urls import url, include, handler404
 from django.contrib import admin
 from django.conf import settings
 from rest_framework import routers
+from vocabs import api_views
+
+from myprodigy import api_views as nerdpool_api_views
+
+# from myprodigy.api_views import NerSampleList
 
 router = routers.DefaultRouter()
+router.register(r'skoslabels', api_views.SkosLabelViewSet)
+router.register(r'skosnamespaces', api_views.SkosNamespaceViewSet)
+router.register(r'skosconceptschemes', api_views.SkosConceptSchemeViewSet)
+router.register(r'skosconcepts', api_views.SkosConceptViewSet)
+router.register(r'nersapmles', nerdpool_api_views.NerSampleViewSet)
+
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),
