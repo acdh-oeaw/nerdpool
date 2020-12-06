@@ -11,11 +11,12 @@ from django.views.generic.edit import DeleteView
 from . filters import *
 from . forms import *
 from . tables import *
-from . utils import limit_acces, test_access
+from . utils import limit_acces, test_access, limit_access_nersample, test_access_nersample
 from .models import (
     NerDataSet,
     NerSample,
-    ProdigyServer)
+    ProdigyServer
+)
 from browsing.browsing_utils import (
     GenericListView, BaseCreateView, BaseUpdateView, BaseDetailView
 )
@@ -113,11 +114,25 @@ class NerSampleListView(GenericListView):
     ]
     enable_merge = False
 
+    def get_queryset(self, **kwargs):
+        user = self.request.user
+        qs = super(NerSampleListView, self).get_queryset()
+        qs = limit_access_nersample(qs, user)
+        self.filter = self.filter_class(self.request.GET, queryset=qs)
+        self.filter.form.helper = self.formhelper_class()
+        return self.filter.qs
 
-class NerSampleDetailView(BaseDetailView):
+
+class NerSampleDetailView(UserPassesTestMixin, BaseDetailView):
 
     model = NerSample
     template_name = 'myprodigy/nersample_detail.html'
+
+    def test_func(self):
+        user = self.request.user
+        cur_obj = self.get_object()
+        grant_access = test_access_nersample(cur_obj, user)
+        return grant_access
 
 
 class NerSampleCreate(BaseCreateView):

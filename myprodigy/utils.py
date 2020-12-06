@@ -3,8 +3,26 @@ from vocabs.models import SkosConcept
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.db.models.query import EmptyQuerySet
 
 from . models import NerDataSet, NerSample, Dataset
+
+
+def limit_access_nersample(qs, user):
+    if user.is_superuser:
+        pass
+    elif user.is_anonymous:
+        qs = qs.filter(dataset__is_public=True).distinct()
+    else:
+        qs = qs.filter(
+            Q(
+                dataset__is_public=True
+            ) |
+            Q(
+                dataset__ner_annotator=user
+            )
+        ).distinct()
+    return qs
 
 
 def limit_acces(qs, user):
@@ -22,6 +40,17 @@ def limit_acces(qs, user):
             )
         ).distinct()
     return qs
+
+
+def test_access_nersample(object, user):
+    rel_datasets = object.dataset.all()
+    public_set = rel_datasets.filter(is_public=True)
+    if public_set:
+        return True
+    elif user.is_superuser:
+        return True
+    else:
+        return rel_datasets.filter(ner_annotator=user)
 
 
 def test_access(object, user):

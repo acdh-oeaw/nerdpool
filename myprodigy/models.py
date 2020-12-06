@@ -71,7 +71,7 @@ class NerDataSet(models.Model):
     )
     is_public = models.BooleanField(
         default=False,
-        verbose_name="pubic",
+        verbose_name="public",
         help_text="Should the data related to this dataset be public",
     )
     basic_auth_user = models.CharField(
