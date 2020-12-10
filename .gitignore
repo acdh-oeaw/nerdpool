@@ -23,7 +23,7 @@ output_*
 
 # production(like) settings files
 mysql.py
-server.py
+# server.py
 postgres.py
 dev_secret.py
 
