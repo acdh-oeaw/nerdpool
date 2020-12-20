@@ -49,7 +49,7 @@ def test_access_nersample(object, user):
         return True
     elif user.is_superuser:
         return True
-    else:
+    elif user.is_authenticated:
         return rel_datasets.filter(ner_annotator=user)
 
 
