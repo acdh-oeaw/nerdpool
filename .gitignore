@@ -38,3 +38,5 @@ prodigy.json
 pg_local.py
 sample.json
 /prodigy/*
+/env
+/prodigy
