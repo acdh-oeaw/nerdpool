@@ -8,3 +8,10 @@ Hardly any resources for the training of NER models for non-contemporary German 
 ## prodigy server-start examples
 
 prodigy nerdpool.ner thun de_core_news_sm https://thun-korrespondenz.acdh.oeaw.ac.at::thun::editions --loader from_dsebaseapp --label PER,ORG,LOC -U -F myprodigy/nerdpool_ner.py
+
+
+## docker run
+
+enter the container `docker run --env-file .env --rm -p 8000:8000 -it --entrypoint /bin/bash  nerdpool:latest`
+
+start server `docker run --env-file .env --rm -p 8000:8000 -it nerdpool:latest`

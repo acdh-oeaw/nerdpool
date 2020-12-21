@@ -78,7 +78,7 @@ def create_prodigy_command(ds):
     dsc_lst.insert(1, ds.ner_name)
     sc = " ".join(dsc_lst)
     if "-F" not in sc:
-        sc += " -F /nerdpool/nerdpool/prodigy_recipes/__init__.py"
+        sc += " -F /app/prodigy_recipes/__init__.py"
     return sc
 
 
@@ -111,7 +111,7 @@ def start_prodigy_server(dataset_id, new=False):
     if os.path.isfile(f"/nerdpool/dataset-configs/{dataset_id}/prodigy.json"):
         base_cmd[0] = f"PRODIGY_HOME=/nerdpool/dataset-configs/{dataset_id} {base_cmd[0]}"
     else:
-        base_cmd[0] = f"PRODIGY_HOME=/config-nerdpool {base_cmd[0]}"
+        base_cmd[0] = f"PRODIGY_HOME=/app {base_cmd[0]}"
     Popen(
         base_cmd,
         shell=True,

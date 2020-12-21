@@ -1,7 +1,7 @@
 import os
 import sys
 import django
-sys.path.append('/nerdpool/nerdpool')
+sys.path.append('/app/nerdpool')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nerdpool.settings.server')
 django.setup()
 
