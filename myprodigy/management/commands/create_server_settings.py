@@ -9,7 +9,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
             '--path',
-            default="/nginx/conf.d/default.conf",
+            default="/etc/nginx/conf.d/default.conf",
             help='Full path of the nginx conf file to store',
         )
 
@@ -20,4 +20,4 @@ class Command(BaseCommand):
             lc += nginx_loc.format(hash=s.server_hash, port=s.port, prodigy_base_url=PRODIGY_BASE_URL)
         with open(path, 'w') as out:
             out.write(nginx_templ.format(loc=lc))
-        self.stdout.write(self.style.SUCCESS('Successfully updated server settings')) 
+        self.stdout.write(self.style.SUCCESS('Successfully updated server settings'))

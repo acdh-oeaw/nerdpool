@@ -36,11 +36,11 @@ server {{
 
     location /static/ {{
         autoindex on;
-        alias /staticfiles/;
+        alias /app/staticfiles/;
     }}
 
     location / {{
-        proxy_pass http://nerdpool_prodigy:8000;
+        proxy_pass http://127.0.0.1:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -65,7 +65,7 @@ server {{
 
         auth_basic "Provide a password";
         auth_basic_user_file /etc/nginx/conf.d/.passwd;
-        proxy_pass http://nerdpool_prodigy:{port};
+        proxy_pass http://127.0.0.1:{port};
     }}
 }}
 """
@@ -100,7 +100,7 @@ def start_prodigy_server(dataset_id, new=False):
             lc += nginx_loc.format(
                 hash=s.server_hash, port=s.port, prodigy_base_url=PRODIGY_BASE_URL
             )
-        with open("/nginx/default.conf", "w") as out:
+        with open("/etc/nginx/conf.d/default.conf", "w") as out:
             out.write(nginx_templ.format(loc=lc))
     ds = NerDataSet.objects.get(pk=dataset_id)
     sc = create_prodigy_command(ds)
